@@ -6,7 +6,7 @@ import InvoiceView from '../InvoiceView/InvoiceView'
 import { Routes, Route } from 'react-router-dom'
 import Product from '../Product/Product'
 import Setting from '../Setting/Setting'
-import Client from '../Invoice/Client/Client'
+import Client from '../Client/Client'
 import Manager from '../Manager/Manager'
 
 function MainContent() {

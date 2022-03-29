@@ -11,8 +11,8 @@ function Invoices() {
 }
 
 const Container = styled.div`
-  width: 80%;
-  height: 90%;
+  width: 70%;
+  /* height: 90%; */
   margin: 4rem auto 0 auto;
 `
 
