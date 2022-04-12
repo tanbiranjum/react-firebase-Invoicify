@@ -3,12 +3,6 @@ import styled from 'styled-components'
 import MainContent from '../MainContent/MainContent'
 import SideBar from '../SideBar/SideBar'
 
-import { Routes, Route } from 'react-router-dom'
-import Product from '../Product/Product'
-
-import Invoice from '../Invoice/Invoice'
-import InvoiceView from '../InvoiceView/InvoiceView'
-
 function Layout() {
   return (
     <Container>

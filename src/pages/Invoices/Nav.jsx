@@ -1,14 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
-import { FaPlusCircle } from 'react-icons/fa'
+import { FaRegPaperPlane } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 
-function Nav() {
+function Nav({ count }) {
+  const navigate = useNavigate()
   return (
     <NavContainer>
       <ColumnOne>
         <NavHeader>
           <NavHeaderPrimary>Invoices</NavHeaderPrimary>
-          <NavHeaderSubtitle>There are total 7 invoices</NavHeaderSubtitle>
+          <NavHeaderSubtitle>
+            There are total {count} {count > 1 ? 'invoices' : 'invoice'}.
+          </NavHeaderSubtitle>
         </NavHeader>
       </ColumnOne>
       <ColumnTwo>
@@ -22,8 +26,12 @@ function Nav() {
             <option value="draft">Draft</option>
           </FilterSelect>
         </FilterContainer>
-        <CreateButton>
-          <FaPlusCircle /> New Invoice
+        <CreateButton
+          onClick={() => {
+            navigate('/invoice')
+          }}
+        >
+          <FaRegPaperPlane /> New Invoice
         </CreateButton>
       </ColumnTwo>
     </NavContainer>
@@ -43,13 +51,12 @@ const NavHeader = styled.div``
 
 const NavHeaderPrimary = styled.h2`
   font-size: 3rem;
-  letter-spacing: 1px;
-  font-weight: 500;
+  font-weight: 700;
 `
 
 const NavHeaderSubtitle = styled.p`
   font-size: 1.3rem;
-  color: #444444;
+  color: #7f8c8d;
 `
 
 const ColumnTwo = styled.div`
@@ -75,19 +82,18 @@ const FilterSelect = styled.select`
 
 const CreateButton = styled.button`
   border: none;
-  padding: 1rem 1rem;
-  border-radius: .5rem;
+  padding: 1.5rem 2rem;
+  border-radius: 2rem;
   font-size: 1.5rem;
   font-weight: 600;
-  letter-spacing: 1px;
-  background-color: #9277ff;
+  background-color: #2980b9;
   color: white;
   cursor: pointer;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   svg {
-    margin-right: 1rem;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
   }
   &:active {
     transform: translateY(0.1rem);

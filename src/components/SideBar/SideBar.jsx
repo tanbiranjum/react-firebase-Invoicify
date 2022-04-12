@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import {
   FaConfluence,
@@ -7,11 +7,16 @@ import {
   FaStickyNote,
   FaShoppingBag,
   FaRegUser,
+  FaSignInAlt,
+  FaSignOutAlt,
+  FaUserPlus,
 } from 'react-icons/fa'
 
 import { Link as RouterLink } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthContext'
 
 function SideBar() {
+  const { currentUser, logout } = useAuth()
   return (
     <Container>
       <TopBar>
@@ -23,36 +28,76 @@ function SideBar() {
 
       <LinksContainer>
         <Links>
-          <Link to="/">
-            <IconContainer medium={true}>
-              <FaStickyNote />
-            </IconContainer>
-            <LinkTitle>Invoices</LinkTitle>
-          </Link>
-          <Link to="/client">
-            <IconContainer medium={true}>
-              <FaAddressBook />
-            </IconContainer>
-            <LinkTitle>Contact</LinkTitle>
-          </Link>
-          <Link to="/product">
-            <IconContainer medium={true}>
-              <FaShoppingBag />
-            </IconContainer>
-            <LinkTitle>Product</LinkTitle>
-          </Link>
-          <Link to="/manager">
-            <IconContainer medium={true}>
-              <FaRegUser />
-            </IconContainer>
-            <LinkTitle>Manager</LinkTitle>
-          </Link>
-          <Link to="/setting">
-            <IconContainer medium={true}>
-              <FaRegSun />
-            </IconContainer>
-            <LinkTitle>Setting</LinkTitle>
-          </Link>
+          {currentUser && (
+            <Link to="/">
+              <IconContainer medium={true}>
+                <FaStickyNote />
+              </IconContainer>
+              <LinkTitle>Invoices</LinkTitle>
+            </Link>
+          )}
+          {currentUser && (
+            <Link to="/client">
+              <IconContainer medium={true}>
+                <FaAddressBook />
+              </IconContainer>
+              <LinkTitle>Contact</LinkTitle>
+            </Link>
+          )}
+          {currentUser && (
+            <Link to="/product">
+              <IconContainer medium={true}>
+                <FaShoppingBag />
+              </IconContainer>
+              <LinkTitle>Product</LinkTitle>
+            </Link>
+          )}
+          {currentUser && (
+            <Link to="/manager">
+              <IconContainer medium={true}>
+                <FaRegUser />
+              </IconContainer>
+              <LinkTitle>Manager</LinkTitle>
+            </Link>
+          )}
+          {currentUser && (
+            <Link to="/setting">
+              <IconContainer medium={true}>
+                <FaRegSun />
+              </IconContainer>
+              <LinkTitle>Setting</LinkTitle>
+            </Link>
+          )}
+          {!currentUser && (
+            <Link to="/login">
+              <IconContainer medium={true}>
+                <FaSignInAlt />
+              </IconContainer>
+              <LinkTitle>Login</LinkTitle>
+            </Link>
+          )}
+          {!currentUser && (
+            <Link to="/register">
+              <IconContainer medium={true}>
+                <FaUserPlus />
+              </IconContainer>
+              <LinkTitle>Register</LinkTitle>
+            </Link>
+          )}
+          {currentUser && (
+            <Link
+              to="/logout"
+              onClick={async (e) => {
+                e.preventDefault()
+                await logout()
+              }}
+            >
+              <IconContainer medium={true}>
+                <FaSignOutAlt />
+              </IconContainer>
+              <LinkTitle>Logout</LinkTitle>
+            </Link>
+          )}
         </Links>
       </LinksContainer>
     </Container>
@@ -62,7 +107,7 @@ function SideBar() {
 const Container = styled.div`
   width: 15%;
   height: 100%;
-  background-color: #373b53;
+  background-color: #2c3e50;
   border-top-right-radius: 2rem;
   display: flex;
   flex-direction: column;
@@ -103,7 +148,6 @@ const TopBar = styled.div`
 `
 
 const IconContainer = styled.div`
-  margin-right: 1rem;
   svg {
     height: ${(props) => (props.medium ? '2rem' : '4rem')};
     width: ${(props) => (props.medium ? '2rem' : '4rem')};
@@ -130,16 +174,22 @@ const Links = styled.ul`
 `
 
 const Link = styled(RouterLink)`
-  margin-bottom: 2.5rem;
   display: flex;
   align-items: center;
   text-decoration: none;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  transition: all .2s ease-in-out;
+  &:hover {
+    background-color: #2980b9;
+    color: #ffffff;
+  }
 `
 
 const LinkTitle = styled.h3`
-  color: white;
+  color: #ecf0f1;
   font-weight: normal;
-  font-size: 2rem;
+  font-size: 1.8rem;
 `
 
 export default SideBar

@@ -1,24 +1,134 @@
+import {
+  collection,
+  query,
+  getDocs,
+  addDoc,
+  doc,
+  updateDoc,
+  where,
+} from 'firebase/firestore'
 import React from 'react'
 import reactDOM from 'react-dom'
+import styled from 'styled-components'
 
-function AddProduct() {
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import db from '../../firebaseConfig'
+
+/**
+ * TODO: Update functionality
+ * TODO: Create functionality
+ */
+
+function FormSubmitButton({ product }) {
   return (
+    <FormButton type="submit">
+      {product.product_code === '' ? 'Create' : 'Update'}
+    </FormButton>
+  )
+}
+
+function AddProduct({ isOpen, closeModal, product }) {
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const product_code = e.target.elements.product_code.value
+    const product_rate = e.target.elements.product_rate.value
+
+    try {
+      const productsRef = collection(db, 'products')
+      if (product.product_code === '') {
+        createProduct({ product_code, product_rate }, productsRef)
+        return
+      }
+      updatetProduct(product, { product_code, product_rate })
+    } catch (error) {
+      toast.error('Something went wrong! Please try again.')
+    }
+  }
+
+  const createProduct = async (product, productsRef) => {
+    const q = query(
+      productsRef,
+      where('product_code', '==', product.product_code)
+    )
+    const querySnapshot = await getDocs(q)
+    if (querySnapshot.size > 0) {
+      toast.error('There is a product already exist with this code!')
+      return true
+    }
+    await addDoc(productsRef, product)
+      .then(() => {
+        toast.success('Product created!')
+        setTimeout(() => {
+          closeModal()
+        }, 3000)
+      })
+      .catch(() => {
+        toast.error(
+          'There is an error on saving products! Please check your internet connection.'
+        )
+      })
+    toast.success('Product saved!')
+  }
+  const updatetProduct = async (product, updatedProduct) => {
+    const docRef = doc(db, 'products', product.doc_id)
+    if (product.product_code !== updatedProduct.product_code) {
+      toast.error('You can not change product code!')
+      return
+    }
+    await updateDoc(docRef, {
+      product_code: updatedProduct.product_code,
+      product_rate: updatedProduct.product_rate,
+    }).then(() => {
+      toast.success('Product updated!')
+      setTimeout(() => {
+        closeModal()
+      }, 3000)
+    })
+  }
+
+  if (isOpen === false) return null
+  return reactDOM.createPortal(
     <>
       <Overlay />
       <ModalContainer>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <FormGroup>
-            <FormLabel>Product Id</FormLabel>
-            <FormInput type="text" id="product_id" />
+            <FormLabel>Product Code</FormLabel>
+            <FormInput
+              type="text"
+              id="product_code"
+              defaultValue={product.product_code}
+            />
           </FormGroup>
           <FormGroup>
-            <FormLabel>Product Price</FormLabel>
-            <FormInput type="text" id="product_price" maxLength="11" />
+            <FormLabel>Product Rate</FormLabel>
+            <FormInput
+              type="text"
+              id="product_rate"
+              maxLength="11"
+              defaultValue={product.product_rate}
+            />
           </FormGroup>
-          <FormButton type="submit">Create</FormButton>
+          <FormSubmitButton product={product} />
+          <ModalCloseButton type="button" onClick={closeModal}>
+            Close
+          </ModalCloseButton>
         </Form>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </ModalContainer>
-    </>
+    </>,
+    document.getElementById('modal')
   )
 }
 
@@ -35,6 +145,7 @@ const ModalContainer = styled.div`
   border-radius: 1rem;
 `
 
+// This will create blurry effect other than modal
 const Overlay = styled.div`
   position: fixed;
   top: 0;

@@ -2,13 +2,13 @@ import { useState } from 'react'
 import Layout from './components/Layout/Layout'
 
 import './App.css'
-import Invoice from './components/Invoice/Invoice'
-import InvoiceView from './components/InvoiceView/InvoiceView'
+import Invoice from './pages/Invoice/Invoice'
+import InvoiceView from './pages/InvoiceView/InvoiceView'
 
 function App() {
   return (
     <div className="App">
-    <Layout />
+      <Layout />
     </div>
   )
 }
