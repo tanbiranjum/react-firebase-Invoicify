@@ -1,5 +1,5 @@
 import {
-  collection,
+  collection,    
   query,
   getDocs,
   addDoc,
@@ -14,11 +14,6 @@ import styled from 'styled-components'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import db from '../../firebaseConfig'
-
-/**
- * TODO: Update functionality
- * TODO: Create functionality
- */
 
 function FormSubmitButton({ product }) {
   return (

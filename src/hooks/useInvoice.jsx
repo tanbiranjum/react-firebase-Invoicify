@@ -1,29 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import { getDoc, doc, setDoc } from 'firebase/firestore'
-import db from '../firebaseConfig'
+import React from 'react'
+import { InvoiceService } from '../services/DatabaseService'
+import { useQuery } from 'react-query'
 
-function useInvoice(invoiceId) {
-  const [invoice, setInvoice] = useState({})
-  const [isLoaded, setIsLoaded] = useState(false)
+function useInvoice(id) {
+  const { data, isLoading } = useQuery(
+    ['invoices', { id }],
+    InvoiceService.getOne
+  )
+
+  const invoice = data
 
   const updateInvoice = async (data) => {
-    const docRef = doc(db, 'invoices', invoiceId)
-    await setDoc(docRef, data)
+    await InvoiceService.updateDoc(id, data)
   }
 
-  useEffect(() => {
-    const getInvoice = async () => {
-      const docRef = doc(db, 'invoices', invoiceId)
-      const docSnap = await getDoc(docRef)
-      const data = docSnap.data()
-      console.log(data)
-      setInvoice(data)
-      setIsLoaded(true)
-      return
-    }
-    getInvoice()
-  }, [])
-  return { invoice, updateInvoice, isLoaded }
+  return { invoice, updateInvoice, isLoading }
 }
 
 export default useInvoice

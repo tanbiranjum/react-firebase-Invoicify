@@ -52,22 +52,22 @@ function SideBar() {
               <LinkTitle>Product</LinkTitle>
             </Link>
           )}
-          {currentUser && (
+          {/* {currentUser && (
             <Link to="/manager">
               <IconContainer medium={true}>
                 <FaRegUser />
               </IconContainer>
               <LinkTitle>Manager</LinkTitle>
             </Link>
-          )}
-          {currentUser && (
+          )} */}
+          {/* {currentUser && (
             <Link to="/setting">
               <IconContainer medium={true}>
                 <FaRegSun />
               </IconContainer>
               <LinkTitle>Setting</LinkTitle>
             </Link>
-          )}
+          )} */}
           {!currentUser && (
             <Link to="/login">
               <IconContainer medium={true}>

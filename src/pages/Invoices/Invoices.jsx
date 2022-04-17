@@ -24,7 +24,7 @@ import useInvoices from '../../hooks/useInvoices'
 
 function Invoices() {
   const navigate = useNavigate()
-  const {invoices, isLoaded} = useInvoices()
+  const { data, isLoading } = useInvoices()
 
   const handleNavigate = (id) => {
     navigate(`/invoice-view/${id}`)
@@ -32,12 +32,12 @@ function Invoices() {
   }
   return (
     <>
-      {isLoaded && (
+      {!isLoading && (
         <Container>
-          <Nav count={invoices.length} />
+          <Nav count={data.length} />
           <ListContainer>
             <Items>
-              {invoices.map((invoice) => (
+              {data.map((invoice) => (
                 <Item
                   key={invoice.id}
                   onClick={() => {
@@ -67,7 +67,7 @@ function Invoices() {
           </ListContainer>
         </Container>
       )}
-      {!isLoaded && <BoxLoader />}
+      {isLoading && <BoxLoader />}
     </>
   )
 }

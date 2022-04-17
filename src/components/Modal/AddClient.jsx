@@ -7,9 +7,17 @@ import * as Yup from 'yup'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-import db from '../../firebaseConfig'
+import { ClientService } from '../../services/DatabaseService'
 
-function AddClient({ isOpen, closeModal }) {
+function FormSubmitButton({ client }) {
+  return (
+    <FormButton type="submit">
+      {client.clientName === '' ? 'Create' : 'Update'}
+    </FormButton>
+  )
+}
+
+function AddClient({ isOpen, closeModal, client }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const clientName = e.target.elements.client_name.value
@@ -17,27 +25,39 @@ function AddClient({ isOpen, closeModal }) {
     const clientAddress = e.target.elements.client_address.value
 
     try {
-      // Check if client already exist on this number
-      const clientRef = collection(db, 'clients')
-      const q = query(clientRef, where('clientMobile', '==', clientMobile))
-      const querySnapshot = await getDocs(q)
-      if (querySnapshot.size > 0) {
-        alert('You already have a client on this number!')
+      if (client?.clientName === '') {
+        saveClient({ clientName, clientMobile, clientAddress })
+        return
       }
 
-      await addDoc(clientRef, {
+      await ClientService.updateDoc(client.id, {
         clientName,
         clientMobile,
         clientAddress,
-      }).catch(() => {
-        toast.error(
-          'There is an error on saving clients! Please check your internet connection.'
-        )
       })
-      alert('Doc Added')
+      alert('Contact Added')
+      setTimeout(() => {
+        closeModal()
+      }, 3000)
     } catch (error) {
       toast.error('Something went wrong! Please try again.')
     }
+  }
+
+  const saveClient = async (client) => {
+    const queryData = await ClientService.queryData(
+      'clientMobile',
+      client.clientMobile
+    )
+    if (queryData.length > 0) {
+      toast.error('There is a client already exist with this mobile no!')
+      return
+    }
+    await ClientService.createDoc(client)
+    toast.success('Contact saved!')
+    setTimeout(() => {
+      closeModal()
+    }, 3000)
   }
 
   if (isOpen === false) return null
@@ -48,17 +68,30 @@ function AddClient({ isOpen, closeModal }) {
         <Form onSubmit={handleSubmit}>
           <FormGroup>
             <FormLabel>Client Name</FormLabel>
-            <FormInput type="text" id="client_name" />
+            <FormInput
+              type="text"
+              id="client_name"
+              defaultValue={client.clientName}
+            />
           </FormGroup>
           <FormGroup>
             <FormLabel>Client Mobile</FormLabel>
-            <FormInput type="text" id="client_mobile" maxLength="11" />
+            <FormInput
+              type="text"
+              id="client_mobile"
+              maxLength="11"
+              defaultValue={client.clientMobile}
+            />
           </FormGroup>
           <FormGroup>
             <FormLabel>Client Address</FormLabel>
-            <FormInput type="text" id="client_address" />
+            <FormInput
+              type="text"
+              id="client_address"
+              defaultValue={client.clientAddress}
+            />
           </FormGroup>
-          <FormButton type="submit">Create</FormButton>
+          <FormSubmitButton client={client} />
           <ModalCloseButton type="button" onClick={closeModal}>
             Close
           </ModalCloseButton>

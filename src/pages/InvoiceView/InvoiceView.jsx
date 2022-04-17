@@ -40,7 +40,7 @@ function InvoiceView() {
   const componentRef = useRef()
   const { id } = useParams()
   const navigate = useNavigate()
-  const { invoice, isLoaded } = useInvoice(id)
+  const { invoice, isLoading } = useInvoice(id)
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -53,7 +53,7 @@ function InvoiceView() {
   if (!invoice) return null
   return (
     <>
-      {isLoaded && (
+      {!isLoading && (
         <Container>
           <ActionButton>
             <PrintButton onClick={handlePrint}>
@@ -78,7 +78,7 @@ function InvoiceView() {
             </InvoiceRow>
             <InvoiceRow>
               <ColumnThree>
-                <ColumnHeading>Invoice Date</ColumnHeading>
+                <ColumnHeading>Order Date</ColumnHeading>
                 <InvoiceDate>{invoice.invoiceDate}</InvoiceDate>
                 <ColumnHeading>Delivery Date</ColumnHeading>
                 <InvoiceDate>{invoice.deliveryDate}</InvoiceDate>
@@ -90,7 +90,7 @@ function InvoiceView() {
                 <ClientAddress>{invoice.clientAddress}</ClientAddress>
               </ColumnThree>
               <ColumnThree>
-                <ColumnHeading>Invoice Info</ColumnHeading>
+                <ColumnHeading>Order Info</ColumnHeading>
                 <InvoiceCode>Code: {invoice.code}</InvoiceCode>
                 <Manager>Manager: {invoice.manager}</Manager>
               </ColumnThree>
@@ -100,27 +100,28 @@ function InvoiceView() {
                 <thead>
                   <TableRow>
                     <TableHeader>Description</TableHeader>
-                    <TableHeader>Code</TableHeader>
                     <TableHeader>Color</TableHeader>
+                    <TableHeader>Variation</TableHeader>
                     <TableHeader>Size</TableHeader>
                     <TableHeader>Quantity</TableHeader>
                     <TableHeader>Rate</TableHeader>
                     <TableHeader>Price</TableHeader>
                   </TableRow>
                 </thead>
-                {console.log(invoice.products)}
                 <tbody>
-                  {invoice.products.map((product) => (
+                  {invoice.products.map((product, index) => (
                     <TableRow key={product.product_code}>
                       <TableData>{product.description}</TableData>
-                      <TableData>{product.product_code}</TableData>
-                      <TableData>{product.product_color}</TableData>
-                      <TableData>{product.product_size}</TableData>
-                      <TableData>{product.product_quantity}</TableData>
-                      <TableData>{product.product_price}</TableData>
-                      <TableData>
-                        {product.product_quantity * 1 * product.product_price}
-                      </TableData>
+                      <TableData>{product.productColor}</TableData>
+                      {index === 0 && (
+                        <>
+                          <TableData>{invoice.productVariation}</TableData>
+                          <TableData>{invoice.productSize}</TableData>
+                          <TableData>{invoice.productQuantity}</TableData>
+                          <TableData>{invoice.productRate}</TableData>
+                          <TableData>{invoice.totalPrice}</TableData>
+                        </>
+                      )}
                     </TableRow>
                   ))}
                 </tbody>
@@ -133,7 +134,7 @@ function InvoiceView() {
           </InvoiceContainer>
         </Container>
       )}
-      {!isLoaded && <BoxLoader />}
+      {isLoading && <BoxLoader />}
     </>
   )
 }

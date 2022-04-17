@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import Layout from './components/Layout/Layout'
-
 import './App.css'
-import Invoice from './pages/Invoice/Invoice'
-import InvoiceView from './pages/InvoiceView/InvoiceView'
+import { QueryClientProvider, QueryClient } from 'react-query'
+
+const queryClient = new QueryClient()
 
 function App() {
   return (
     <div className="App">
-      <Layout />
+      <QueryClientProvider client={queryClient}>
+        <Layout />
+      </QueryClientProvider>
     </div>
   )
 }
