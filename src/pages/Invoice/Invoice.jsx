@@ -73,15 +73,18 @@ function Invoice({ values, products, editmode }) {
       ...formState,
       totalPrice,
     }
-    // invoiceFormSchema.validate(formData).catch((err) => {
-    //   console.log(err.name)
-    //   console.log(err.errors[0])
-    //   toast(err.errors[0])
-    //   return
-    // })
-    const docRef = await InvoiceService.createDoc(formData)
-    setSaveDoc(false)
-    navigate(`/invoice-view/${docRef.id}`)
+    invoiceFormSchema
+      .validate(formData)
+      .then(async () => {
+        const docRef = await InvoiceService.createDoc(formData)
+        setSaveDoc(false)
+        navigate(`/invoice-view/${docRef.id}`)
+        return
+      })
+      .catch((err) => {
+        toast.error(err.errors[0])
+        return
+      })
   }
 
   const handleUpdate = async () => {
