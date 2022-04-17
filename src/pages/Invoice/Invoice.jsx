@@ -32,7 +32,7 @@ import {
 } from './Styles'
 import useForm from '../../hooks/useForm'
 import InputField from '../../components/UI/InputField/InputField'
-import ClientSearch from './clientSearch'
+import ClientSearch from './ClientSearch'
 import AddClientForm from './AddClientForm'
 import { InvoiceService } from '../../services/DatabaseService'
 
