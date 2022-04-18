@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { FaCircleNotch } from 'react-icons/fa'
 import { ClientService } from '../../services/DatabaseService'
 import { FormGroup, FormLabel, FormInput, Spinner } from './Styles'
@@ -11,11 +11,21 @@ function ClientSearch({ setFormState }) {
     }
     setIsLoading(true)
     const data = await ClientService.queryData('clientMobile', e.target.value)
+    if (data.length > 0) {
+      setFormState((prev) => ({
+        ...prev,
+        clientName: data[0]?.clientName,
+        clientMobile: data[0]?.clientMobile,
+        clientAddress: data[0]?.clientAddress,
+      }))
+      setIsLoading(false)
+      return
+    }
     setFormState((prev) => ({
       ...prev,
-      clientName: data[0].clientName,
-      clientMobile: data[0].clientMobile,
-      clientAddress: data[0].clientAddress,
+      clientName: '',
+      clientMobile: '',
+      clientAddress: '',
     }))
     setIsLoading(false)
   }
