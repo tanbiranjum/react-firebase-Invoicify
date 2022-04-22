@@ -7,18 +7,23 @@ export const Container = styled.div`
 `
 
 export const InvoiceContainer = styled.div`
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   background-color: #ffffff;
   padding: 4rem 2rem 2rem 2rem;
-  /* border-radius: 1rem; */
-  border: 1px solid gray;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+`
+
+export const PrintComponent = styled.div`
+  border: 1px solid black;
+  padding: 2rem;
 `
 
 export const InvoiceRow = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5rem;
 `
 
 export const ColumnTwo = styled.div`
@@ -42,16 +47,18 @@ export const DocNo = styled.h6`
 export const CompanyName = styled.h2`
   font-size: 1.2rem;
   text-align: right;
+  font-weight: 700;
 `
 
 export const CompanyAddress = styled.p`
   font-size: 1.2rem;
   text-align: right;
+  font-weight: 500;
 `
 
 export const ColumnHeading = styled.h4`
   font-size: 1.2rem;
-  color: gray;
+  color: black;
 `
 
 export const InvoiceDate = styled.p`
@@ -67,18 +74,22 @@ export const ClientName = styled.p`
 
 export const ClientMobile = styled.p`
   font-size: 1.2rem;
+  font-weight: 500;
 `
 
 export const ClientAddress = styled.p`
   font-size: 1.2rem;
+  font-weight: 500;
 `
 
 export const InvoiceCode = styled.p`
   font-size: 1.2rem;
+  font-weight: 500;
 `
 
 export const Manager = styled.p`
   font-size: 1.2rem;
+  font-weight: 500;
 `
 
 export const TableContainer = styled.div``
@@ -86,13 +97,14 @@ export const TableContainer = styled.div``
 export const Table = styled.table`
   border-collapse: collapse;
   width: 100%;
+  border: 1px solid black;
 `
 
 export const TableRow = styled.tr``
 
 export const TableHeader = styled.th`
   padding: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid black;
   text-align: left;
   font-size: 1.2rem;
   font-weight: 600;
@@ -100,10 +112,10 @@ export const TableHeader = styled.th`
 
 export const TableData = styled.td`
   padding: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid black;
   text-align: left;
   font-size: 1.2rem;
-  font-weight: 500;
+  font-weight: 600;
 `
 
 export const AmountContainer = styled.div`
@@ -111,11 +123,11 @@ export const AmountContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 2rem 1rem;
-  background-color: #373b53;
+  /* background-color: black; */
   /* border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem; */
-  color: white;
-  margin-top: 5rem;
+  color: black;
+  margin-top: 1rem;
 `
 
 export const AmountTitle = styled.h4`
@@ -133,8 +145,8 @@ export const ActionButton = styled.div`
   justify-content: space-between;
   /* border-radius: 1rem; */
   padding: 2rem;
-  width: 80%;
-  margin: 0 auto 2rem auto;
+  width: 90%;
+  margin: 0 auto 4rem auto;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `
 

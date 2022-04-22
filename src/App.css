@@ -1,21 +1,62 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'); */
-
 @import url('https://fonts.googleapis.com/css2?family=Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
-html {
-  font-size: 62.5%;
-  /* Now 1rem = 10px */
-}
 
 *,
 *::before,
 *::after {
+  box-sizing: border-box;
+}
+* {
   margin: 0;
   padding: 0;
 }
 
+html {
+  font-size: 62.5%;
+}
+
+html,
 body {
-  box-sizing: border-box;
-  /* font-family: 'Poppins', sans-serif; */
+  height: 100%;
+}
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
   font-family: 'Spartan', sans-serif;
+}
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+#root,
+#__next {
+  isolation: isolate;
+}
+
+@media print {
+  html,
+  body {
+    height: 100vh;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+  }
 }
