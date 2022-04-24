@@ -222,6 +222,7 @@ function Invoice({ values, products, editmode }) {
                   list="variation"
                   onChange={handleFormStateChange}
                   value={formState.productVariation}
+                  required
                 />
                 <datalist id="variation">
                   <option value="আড়া" />
