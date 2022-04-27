@@ -5,7 +5,6 @@ import { BoxLoader } from '../../components/Loader/BoxLoader'
 import { useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
 
-
 import {
   Container,
   ListContainer,
@@ -21,6 +20,7 @@ import {
 } from './Styles'
 
 import useInvoices from '../../hooks/useInvoices'
+import calculatePrice from '../../utils/calculatePrice'
 
 function Invoices() {
   const navigate = useNavigate()
@@ -39,9 +39,9 @@ function Invoices() {
             <Items>
               {data.map((invoice) => (
                 <Item
-                  key={invoice.id}
+                  key={invoice._id}
                   onClick={() => {
-                    handleNavigate(invoice.id)
+                    handleNavigate(invoice._id)
                   }}
                 >
                   <LeftCol>
@@ -56,7 +56,12 @@ function Invoices() {
                     <ClientName>{invoice.clientName}</ClientName>
                   </LeftCol>
                   <RightCol>
-                    <TotalPrice> &#2547; {invoice.totalPrice}</TotalPrice>
+                    <TotalPrice>
+                      {calculatePrice(
+                        invoice.productQuantity,
+                        invoice.productRate
+                      )}
+                    </TotalPrice>
                     <IconContainer>
                       <FaChevronRight />
                     </IconContainer>

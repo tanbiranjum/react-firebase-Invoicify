@@ -1,4 +1,3 @@
-import { collection, where, getDocs, query, addDoc } from 'firebase/firestore'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
@@ -7,7 +6,7 @@ import * as Yup from 'yup'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-import { ClientService } from '../../services/DatabaseService'
+import { ClientService } from '../../services/APIService'
 
 function FormSubmitButton({ client }) {
   return (
@@ -30,34 +29,34 @@ function AddClient({ isOpen, closeModal, client }) {
         return
       }
 
-      await ClientService.updateDoc(client.id, {
+      const result = await ClientService.updateDoc(client._id, {
         clientName,
         clientMobile,
         clientAddress,
       })
-      alert('Contact Added')
+      if (result.status === 'failed') {
+        alert('Duplicate key found!')
+        return
+      }
+      alert('Contact updated')
       setTimeout(() => {
         closeModal()
-      }, 3000)
+      }, 2000)
     } catch (error) {
       toast.error('Something went wrong! Please try again.')
     }
   }
 
   const saveClient = async (client) => {
-    const queryData = await ClientService.queryData(
-      'clientMobile',
-      client.clientMobile
-    )
-    if (queryData.length > 0) {
-      toast.error('There is a client already exist with this mobile no!')
+    const result = await ClientService.createDoc(client)
+    if (result.status === 'failed') {
+      alert('Duplicate key found!')
       return
     }
-    await ClientService.createDoc(client)
-    toast.success('Contact saved!')
+    alert('Contact Added')
     setTimeout(() => {
       closeModal()
-    }, 3000)
+    }, 2000)
   }
 
   if (isOpen === false) return null

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const invoiceSchema = new Schema({
-  id: {
+  invoiceId: {
     type: String,
     // required: [true, 'should have a id'],
   },

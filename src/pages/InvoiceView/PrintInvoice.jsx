@@ -1,4 +1,5 @@
 import React from 'react'
+import calculatePrice from '../../utils/calculatePrice'
 
 import {
   InvoiceRow,
@@ -74,7 +75,7 @@ function PrintInvoice({ invoice }) {
               </thead>
               <tbody>
                 {invoice.products.map((product, index) => (
-                  <TableRow key={product.product_code}>
+                  <TableRow key={product._id}>
                     <TableData>{product.description}</TableData>
                     <TableData>{product.productColor}</TableData>
                     {index === 0 && (
@@ -83,7 +84,12 @@ function PrintInvoice({ invoice }) {
                         <TableData>{invoice.productSize}</TableData>
                         <TableData>{invoice.productQuantity}</TableData>
                         <TableData>{invoice.productRate}</TableData>
-                        <TableData>{invoice.totalPrice}</TableData>
+                        <TableData>
+                          {calculatePrice(
+                            invoice.productQuantity,
+                            invoice.productRate
+                          )}
+                        </TableData>
                       </>
                     )}
                   </TableRow>

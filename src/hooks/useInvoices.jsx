@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { InvoiceService } from '../services/DatabaseService'
+import { InvoiceService } from '../services/APIService'
 import { useQuery } from 'react-query'
 
 async function getInvoices() {
-  return await InvoiceService.getAll()
+  const result = await InvoiceService.getAll()
+  return result.data
   // setInvoices(invoices)
   // setIsLoading(false)
 }

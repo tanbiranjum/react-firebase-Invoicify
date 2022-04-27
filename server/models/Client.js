@@ -2,16 +2,16 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const clientSchema = new Schema({
-  name: {
+  clientName: {
     type: String,
     required: [true, 'should have a name'],
   },
-  mobile: {
+  clientMobile: {
     type: String,
     required: [true, 'should have a number'],
     unique: true,
   },
-  address: {
+  clientAddress: {
     type: String,
     required: [true, 'should have a address'],
   },

@@ -1,24 +1,15 @@
-import {
-  collection,    
-  query,
-  getDocs,
-  addDoc,
-  doc,
-  updateDoc,
-  where,
-} from 'firebase/firestore'
 import React from 'react'
 import reactDOM from 'react-dom'
 import styled from 'styled-components'
 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import db from '../../firebaseConfig'
+import { ProductService } from '../../services/APIService'
 
 function FormSubmitButton({ product }) {
   return (
     <FormButton type="submit">
-      {product.product_code === '' ? 'Create' : 'Update'}
+      {product.id === '' ? 'Create' : 'Update'}
     </FormButton>
   )
 }
@@ -26,60 +17,43 @@ function FormSubmitButton({ product }) {
 function AddProduct({ isOpen, closeModal, product }) {
   const handleSubmit = (e) => {
     e.preventDefault()
-    const product_code = e.target.elements.product_code.value
-    const product_rate = e.target.elements.product_rate.value
+    const id = e.target.elements.product_id.value
+    const price = e.target.elements.product_price.value
 
+    console.log(id, price)
     try {
-      const productsRef = collection(db, 'products')
-      if (product.product_code === '') {
-        createProduct({ product_code, product_rate }, productsRef)
+      if (product.id === '') {
+        createProduct({ id, price })
         return
       }
-      updatetProduct(product, { product_code, product_rate })
+      updateProduct(product, { id, price })
     } catch (error) {
       toast.error('Something went wrong! Please try again.')
     }
   }
 
-  const createProduct = async (product, productsRef) => {
-    const q = query(
-      productsRef,
-      where('product_code', '==', product.product_code)
-    )
-    const querySnapshot = await getDocs(q)
-    if (querySnapshot.size > 0) {
-      toast.error('There is a product already exist with this code!')
-      return true
+  const createProduct = async (data) => {
+    try {
+      await ProductService.createDoc(data)
+      toast.success('Product saved!')
+    } catch (error) {
+      toast.error('Something went wrong!')
     }
-    await addDoc(productsRef, product)
-      .then(() => {
-        toast.success('Product created!')
-        setTimeout(() => {
-          closeModal()
-        }, 3000)
-      })
-      .catch(() => {
-        toast.error(
-          'There is an error on saving products! Please check your internet connection.'
-        )
-      })
-    toast.success('Product saved!')
   }
-  const updatetProduct = async (product, updatedProduct) => {
-    const docRef = doc(db, 'products', product.doc_id)
-    if (product.product_code !== updatedProduct.product_code) {
-      toast.error('You can not change product code!')
-      return
-    }
-    await updateDoc(docRef, {
-      product_code: updatedProduct.product_code,
-      product_rate: updatedProduct.product_rate,
-    }).then(() => {
+  const updateProduct = async (product, updatedProduct) => {
+    try {
+      const result = await ProductService.updateDoc(product._id, updatedProduct)
+      if (result.status === 'failed') {
+        toast.error('Duplicate Key!')
+        return
+      }
       toast.success('Product updated!')
       setTimeout(() => {
         closeModal()
       }, 3000)
-    })
+    } catch (error) {
+      toast.error('Something went wrong!')
+    }
   }
 
   if (isOpen === false) return null
@@ -90,19 +64,15 @@ function AddProduct({ isOpen, closeModal, product }) {
         <Form onSubmit={handleSubmit}>
           <FormGroup>
             <FormLabel>Product Code</FormLabel>
-            <FormInput
-              type="text"
-              id="product_code"
-              defaultValue={product.product_code}
-            />
+            <FormInput type="text" id="product_id" defaultValue={product.id} />
           </FormGroup>
           <FormGroup>
             <FormLabel>Product Rate</FormLabel>
             <FormInput
               type="text"
-              id="product_rate"
+              id="product_price"
               maxLength="11"
-              defaultValue={product.product_rate}
+              defaultValue={product.price}
             />
           </FormGroup>
           <FormSubmitButton product={product} />

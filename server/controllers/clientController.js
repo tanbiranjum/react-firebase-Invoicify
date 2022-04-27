@@ -8,18 +8,48 @@ exports.getClient = async (req, res, next) => {
 }
 
 exports.getClients = async (req, res, next) => {
-  const clients = await Client.find()
+  let query = Client.find()
+
+  const page = parseInt(req.query.page) || 1
+  const pageSize = parseInt(req.query.limit) || 4
+  const skip = (page - 1) * pageSize
+  const total = await Client.countDocuments()
+
+  const pages = Math.ceil(total / pageSize)
+
+  query = query.skip(skip).limit(pageSize)
+
+  if (page > pages) {
+    return res.status(404).json({
+      status: 'failed',
+      message: 'No page found',
+    })
+  }
+
+  const result = await query
   res.status(200).json({
-    data: clients,
+    data: result,
   })
+}
+
+const getClientByMobile = async (req, res, next) => {
+  
 }
 
 exports.createClient = async (req, res, next) => {
   const data = req.body
-  const newClient = await Client.create(data)
-  res.status(201).json({
-    data: newClient,
-  })
+  try {
+    const newClient = await Client.create(data)
+    res.status(201).json({
+      status: 'success',
+      data: newClient,
+    })
+  } catch (error) {
+    res.status(406).json({
+      status: 'failed',
+      message: error,
+    })
+  }
 }
 
 exports.deleteClient = async (req, res, next) => {

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import AddClient from '../../components/Modal/AddClient'
-import useClients from '../../hooks/useClients'
 import {
   Container,
   ClientContainer,
@@ -17,8 +16,7 @@ import {
   TableData,
 } from './Styles'
 
-function Client() {
-  const { clients, isLoading } = useClients()
+function Client({ clients }) {
   const [searchData, setSearchData] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [currentClient, setCurrentClient] = useState({
@@ -26,46 +24,47 @@ function Client() {
     clientMobile: '',
     clientAddress: '',
   })
+
   return (
     <Container>
-      {!isLoading && (
-        <ClientContainer>
-          <ClientHeading>
-            <ClientHeadingPrimary>Client</ClientHeadingPrimary>
-            <ClientInputContainer>
-              <ClientInput
-                onChange={(e) => {
-                  setSearchData(e.target.value)
-                }}
-              />
-            </ClientInputContainer>
-            <ClientAddButton
-              onClick={() => {
-                // currentClient set to null to reset this state
-                setCurrentClient({
-                  clientName: '',
-                  clientMobile: '',
-                  clientAddress: '',
-                })
-                setIsOpen(true)
+      <ClientContainer>
+        <ClientHeading>
+          <ClientHeadingPrimary>Client</ClientHeadingPrimary>
+          <ClientInputContainer>
+            <ClientInput
+              onChange={(e) => {
+                setSearchData(e.target.value)
               }}
-            >
-              Add Client
-            </ClientAddButton>
-          </ClientHeading>
-          <ClientListContainer>
-            <TableContainer>
-              <Table>
-                <thead>
-                  <TableRow>
-                    <TableHeader>No</TableHeader>
-                    <TableHeader>Name</TableHeader>
-                    <TableHeader>Mobile</TableHeader>
-                    <TableHeader>Address</TableHeader>
-                  </TableRow>
-                </thead>
-                <tbody>
-                  {clients
+            />
+          </ClientInputContainer>
+          <ClientAddButton
+            onClick={() => {
+              // currentClient set to null to reset this state
+              setCurrentClient({
+                clientName: '',
+                clientMobile: '',
+                clientAddress: '',
+              })
+              setIsOpen(true)
+            }}
+          >
+            Add Client
+          </ClientAddButton>
+        </ClientHeading>
+        <ClientListContainer>
+          <TableContainer>
+            <Table>
+              <thead>
+                <TableRow>
+                  <TableHeader>No</TableHeader>
+                  <TableHeader>Name</TableHeader>
+                  <TableHeader>Mobile</TableHeader>
+                  <TableHeader>Address</TableHeader>
+                </TableRow>
+              </thead>
+              <tbody>
+                {clients &&
+                  clients
                     .filter((item) => {
                       if (item.clientMobile.includes(searchData)) {
                         return true
@@ -86,12 +85,11 @@ function Client() {
                         <TableData>{item.clientAddress}</TableData>
                       </TableRow>
                     ))}
-                </tbody>
-              </Table>
-            </TableContainer>
-          </ClientListContainer>
-        </ClientContainer>
-      )}
+              </tbody>
+            </Table>
+          </TableContainer>
+        </ClientListContainer>
+      </ClientContainer>
       <AddClient
         isOpen={isOpen}
         closeModal={() => {

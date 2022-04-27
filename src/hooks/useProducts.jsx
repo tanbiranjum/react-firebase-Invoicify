@@ -1,9 +1,10 @@
 import React from 'react'
-import { ProductService } from '../services/DatabaseService'
+import { ProductService } from '../services/APIService'
 import { useQuery } from 'react-query'
 
 async function getProducts() {
-  return await ProductService.getAll()
+  const result = await ProductService.getAll()
+  return result.data
 }
 
 function useProducts() {

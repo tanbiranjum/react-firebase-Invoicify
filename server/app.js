@@ -1,5 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv')
+const cors = require('cors')
+
 const productRoutes = require('./routes/productRoutes')
 const invoiceRoutes = require('./routes/invoiceRoutes')
 const managerRoutes = require('./routes/managerRoutes')
@@ -10,6 +12,7 @@ dotenv.config({ path: './config.env' })
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 
 app.get('/', (req, res, next) => {
   res.send('Hello world')
