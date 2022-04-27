@@ -16,7 +16,7 @@ function Nav({ count }) {
         </NavHeader>
       </ColumnOne>
       <ColumnTwo>
-        <FilterContainer>
+        {/* <FilterContainer>
           <FilterSelect>
             <option value="" hidden>
               Type
@@ -25,7 +25,7 @@ function Nav({ count }) {
             <option value="pending">Pending</option>
             <option value="draft">Draft</option>
           </FilterSelect>
-        </FilterContainer>
+        </FilterContainer> */}
         <CreateButton
           onClick={() => {
             navigate('/invoice')
