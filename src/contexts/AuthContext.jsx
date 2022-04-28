@@ -26,6 +26,22 @@ export default function AuthContextProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        if (window.localStorage.getItem('authToken')) {
+          window.localStorage.removeItem('authToken')
+        } else {
+          user.getIdToken().then((token) => {
+            window.localStorage.setItem(
+              'authToken',
+              `${'Bearer' + ' ' + token}`
+            )
+          })
+        }
+      } else {
+        if (window.localStorage.getItem('authToken')) {
+          window.localStorage.removeItem('authToken')
+        }
+      }
       setCurrentUser(user ? user : null)
     })
     return () => {

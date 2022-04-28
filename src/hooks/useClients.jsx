@@ -3,9 +3,9 @@ import { ClientService } from '../services/APIService'
 import { useQuery } from 'react-query'
 
 async function getAllClients() {
-  const result = await ClientService.getAll()
+  const { data } = await ClientService.getAll()
   // console.log('hello')
-  return result.data
+  return data
 }
 
 function useClients() {

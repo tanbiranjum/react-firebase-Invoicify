@@ -3,8 +3,8 @@ import { ProductService } from '../services/APIService'
 
 function useProduct(id) {
   const getProduct = async () => {
-    const result = await ProductService.getOne(id)
-    return result.data
+    const {data} = await ProductService.getOne(id)
+    return data
   }
   const createProduct = async (data) => {
     const result = await ProductService.createDoc(data)

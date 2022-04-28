@@ -3,8 +3,8 @@ import { InvoiceService } from '../services/APIService'
 import { useQuery } from 'react-query'
 
 async function getInvoice(id) {
-  const result = await InvoiceService.getOne(id)
-  return result.data
+  const {data} = await InvoiceService.getOne(id)
+  return data
 }
 
 function useInvoice(id) {

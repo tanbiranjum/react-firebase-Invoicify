@@ -1,5 +1,4 @@
 import React from 'react'
-import Invoices from '../../pages/Invoices/Invoices'
 import styled from 'styled-components'
 import InvoiceView from '../../pages/InvoiceView/InvoiceView'
 import { Routes, Route, useLocation, Navigate, Outlet } from 'react-router-dom'
@@ -12,14 +11,15 @@ import { useAuth } from '../../contexts/AuthContext'
 import InvoiceRenderLogic from '../../pages/Invoice/InvoiceRenderLogic'
 import ProductLogic from '../../pages/Product/ProductLogic'
 import ClientLogic from '../../pages/Client/ClientLogic'
+import InvoicesLogic from '../../pages/Invoices/Invoiceslogic'
 
 function MainContent() {
   return (
     <Container>
       <Routes>
-        <Route path="/" element={<Navigate replace to="dashboard" />} />
+        <Route path="/" element={<Navigate replace to="dashboard/1" />} />
         <Route path="/*" element={<ProtectedRoute />}>
-          <Route path="dashboard" element={<Invoices />} />
+          <Route path="dashboard/:pageNumber" element={<InvoicesLogic />} />
           <Route path="invoice" element={<InvoiceRenderLogic />} />
           <Route path="invoice/:id" element={<InvoiceRenderLogic />} />
           <Route path="invoice-view/:id" element={<InvoiceView />} />

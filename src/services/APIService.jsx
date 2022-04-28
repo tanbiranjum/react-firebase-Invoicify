@@ -4,15 +4,23 @@ class APIService {
     this.collection = `http://localhost:8000/api/v1/${collectionName}`
   }
 
-  getAll = async () => {
-    const res = await fetch(this.collection)
-    return res.json()
+  getAll = async (pageNumber) => {
+    const res = await fetch(`${this.collection}?page=${pageNumber}`, {
+      headers: {
+        Authorization: window.localStorage.getItem('authToken'),
+      },
+    })
+    return await res.json()
   }
 
   getOne = async ({ queryKey }) => {
     const { id } = queryKey[1]
-    const res = await fetch(`${this.collection}/${id}`)
-    return res.json()
+    const res = await fetch(`${this.collection}/${id}`, {
+      headers: {
+        Authorization: window.localStorage.getItem('authToken'),
+      },
+    })
+    return await res.json()
   }
 
   createDoc = async (data) => {
@@ -21,10 +29,11 @@ class APIService {
       headers: {
         Accept: 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
+        Authorization: window.localStorage.getItem('authToken'),
       },
       body: JSON.stringify(data),
     })
-    return res.json()
+    return await res.json()
   }
 
   updateDoc = async (id, data) => {
@@ -34,15 +43,19 @@ class APIService {
       headers: {
         Accept: 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
+        Authorization: window.localStorage.getItem('authToken'),
       },
       body: JSON.stringify(data),
     })
-    return res.json()
+    return await res.json()
   }
 
   removeDoc = async (id) => {
     await fetch(`${this.collection}/${id}`, {
       method: 'DELETE',
+      headers: {
+        Authorization: window.localStorage.getItem('authToken'),
+      },
     })
   }
 }

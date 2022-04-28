@@ -1,13 +1,14 @@
 const Client = require('../models/Client')
+const catchAsync = require('../utils/catchAsync')
 
-exports.getClient = async (req, res, next) => {
+exports.getClient = catchAsync(async (req, res, next) => {
   const client = await Client.findById(req.params.id)
   res.status(201).json({
     data: client,
   })
-}
+})
 
-exports.getClients = async (req, res, next) => {
+exports.getClients = catchAsync(async (req, res, next) => {
   let query = Client.find()
 
   const page = parseInt(req.query.page) || 1
@@ -30,13 +31,11 @@ exports.getClients = async (req, res, next) => {
   res.status(200).json({
     data: result,
   })
-}
+})
 
-const getClientByMobile = async (req, res, next) => {
-  
-}
+const getClientByMobile = async (req, res, next) => {}
 
-exports.createClient = async (req, res, next) => {
+exports.createClient = catchAsync(async (req, res, next) => {
   const data = req.body
   try {
     const newClient = await Client.create(data)
@@ -50,19 +49,19 @@ exports.createClient = async (req, res, next) => {
       message: error,
     })
   }
-}
+})
 
-exports.deleteClient = async (req, res, next) => {
+exports.deleteClient = catchAsync(async (req, res, next) => {
   await Client.findByIdAndDelete(req.params.id)
   res.status(200).json({
     status: 'success',
   })
-}
+})
 
-exports.updateClient = async (req, res, next) => {
+exports.updateClient = catchAsync(async (req, res, next) => {
   const data = req.body
   const updatedClient = await Client.findByIdAndUpdate(req.params.id, data)
   res.status(201).json({
     data: updatedClient,
   })
-}
+})

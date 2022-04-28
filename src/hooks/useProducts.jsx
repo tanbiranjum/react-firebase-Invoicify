@@ -3,8 +3,8 @@ import { ProductService } from '../services/APIService'
 import { useQuery } from 'react-query'
 
 async function getProducts() {
-  const result = await ProductService.getAll()
-  return result.data
+  const {data} = await ProductService.getAll()
+  return data
 }
 
 function useProducts() {

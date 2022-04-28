@@ -9,9 +9,9 @@ function Nav({ count }) {
     <NavContainer>
       <ColumnOne>
         <NavHeader>
-          <NavHeaderPrimary>Invoices</NavHeaderPrimary>
+          <NavHeaderPrimary>Order</NavHeaderPrimary>
           <NavHeaderSubtitle>
-            There are total {count} {count > 1 ? 'invoices' : 'invoice'}.
+            There are total {count} {count > 1 ? 'orders' : 'order'}.
           </NavHeaderSubtitle>
         </NavHeader>
       </ColumnOne>
@@ -31,7 +31,7 @@ function Nav({ count }) {
             navigate('/invoice')
           }}
         >
-          <FaRegPaperPlane /> New Invoice
+          <FaRegPaperPlane /> New Order
         </CreateButton>
       </ColumnTwo>
     </NavContainer>

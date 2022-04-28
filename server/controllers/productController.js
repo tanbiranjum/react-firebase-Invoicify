@@ -1,22 +1,23 @@
 const Product = require('../models/Product')
+const catchAsync = require('../utils/catchAsync')
 
-exports.getProduct = async (req, res, next) => {
+exports.getProduct = catchAsync(async (req, res, next) => {
   const product = await Product.findById(req.params.id)
   res.status(201).json({
     status: 'success',
     data: product,
   })
-}
+})
 
-exports.getProducts = async (req, res, next) => {
+exports.getProducts = catchAsync(async (req, res, next) => {
   const products = await Product.find()
   res.status(200).json({
     status: 'success',
     data: products,
   })
-}
+})
 
-exports.createProduct = async (req, res, next) => {
+exports.createProduct = catchAsync(async (req, res, next) => {
   const data = req.body
   console.log(data)
   const newProduct = await Product.create(data)
@@ -24,17 +25,17 @@ exports.createProduct = async (req, res, next) => {
     status: 'success',
     data: newProduct,
   })
-}
+})
 
-exports.deleteProduct = async (req, res, next) => {
+exports.deleteProduct = catchAsync(async (req, res, next) => {
   const products = await Product.findByIdAndDelete(req.params.id)
   res.status(200).json({
     status: 'success',
     data: products,
   })
-}
+})
 
-exports.updateProduct = async (req, res, next) => {
+exports.updateProduct = catchAsync(async (req, res, next) => {
   const data = req.body
   try {
     const updatedProduct = await Product.findByIdAndUpdate(req.params.id, data)
@@ -48,4 +49,4 @@ exports.updateProduct = async (req, res, next) => {
       message: error,
     })
   }
-}
+})
