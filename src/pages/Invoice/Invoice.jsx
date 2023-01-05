@@ -34,7 +34,7 @@ import useForm from '../../hooks/useForm'
 import InputField from '../../components/UI/InputField/InputField'
 import ClientSearch from './ClientSearch'
 import AddClientForm from './AddClientForm'
-import { InvoiceService } from '../../services/DatabaseService'
+import { InvoiceService } from '../../services/APIService'
 
 /**
  * no form library is used, only raw logic
@@ -65,20 +65,18 @@ function Invoice({ values, products, editmode }) {
       return
     }
     setSaveDoc(true)
-    const totalPrice =
-      formState.productQuantity * 1 * (formState.productRate * 1)
     const formData = {
       invoiceId: Date.now(),
       invoiceDate: dayjs(Date.now()).format('YYYY-MM-DD'),
       ...formState,
-      totalPrice,
     }
     invoiceFormSchema
       .validate(formData)
       .then(async () => {
-        const docRef = await InvoiceService.createDoc(formData)
+        const result = await InvoiceService.createDoc(formData)
+        const docId = result.data._id
         setSaveDoc(false)
-        navigate(`/invoice-view/${docRef.id}`)
+        navigate(`/invoice-view/${docId}`)
         return
       })
       .catch((err) => {
@@ -222,6 +220,7 @@ function Invoice({ values, products, editmode }) {
                   list="variation"
                   onChange={handleFormStateChange}
                   value={formState.productVariation}
+                  required
                 />
                 <datalist id="variation">
                   <option value="আড়া" />

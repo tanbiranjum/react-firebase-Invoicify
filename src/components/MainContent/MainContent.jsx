@@ -1,11 +1,7 @@
 import React from 'react'
-import Invoices from '../../pages/Invoices/Invoices'
 import styled from 'styled-components'
 import InvoiceView from '../../pages/InvoiceView/InvoiceView'
 import { Routes, Route, useLocation, Navigate, Outlet } from 'react-router-dom'
-import Product from '../../pages/Product/Product'
-import Setting from '../../pages/Setting/Setting'
-import Client from '../../pages/Client/Client'
 import Manager from '../../pages/Manager/Manager'
 import Login from '../../pages/Login/Login'
 import Register from '../../pages/Register/Register'
@@ -13,20 +9,23 @@ import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword'
 import ResetPassword from '../../pages/ResetPassword/ResetPassword'
 import { useAuth } from '../../contexts/AuthContext'
 import InvoiceRenderLogic from '../../pages/Invoice/InvoiceRenderLogic'
+import ProductLogic from '../../pages/Product/ProductLogic'
+import ClientLogic from '../../pages/Client/ClientLogic'
+import InvoicesLogic from '../../pages/Invoices/Invoiceslogic'
 
 function MainContent() {
   return (
     <Container>
       <Routes>
-        <Route path="/" element={<Navigate replace to="dashboard" />} />
+        <Route path="/" element={<Navigate replace to="dashboard/1" />} />
         <Route path="/*" element={<ProtectedRoute />}>
-          <Route path="dashboard" element={<Invoices />} />
+          <Route path="dashboard/:pageNumber" element={<InvoicesLogic />} />
           <Route path="invoice" element={<InvoiceRenderLogic />} />
           <Route path="invoice/:id" element={<InvoiceRenderLogic />} />
           <Route path="invoice-view/:id" element={<InvoiceView />} />
-          <Route path="product" element={<Product />} />
+          <Route path="product" element={<ProductLogic />} />
           {/* <Route path="manager" element={<Manager />} /> */}
-          <Route path="client" element={<Client />} />
+          <Route path="client" element={<ClientLogic />} />
           {/* <Route path="setting" element={<Setting />} /> */}
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />

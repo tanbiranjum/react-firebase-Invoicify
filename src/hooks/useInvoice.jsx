@@ -1,11 +1,16 @@
 import React from 'react'
-import { InvoiceService } from '../services/DatabaseService'
+import { InvoiceService } from '../services/APIService'
 import { useQuery } from 'react-query'
+
+async function getInvoice(id) {
+  const {data} = await InvoiceService.getOne(id)
+  return data
+}
 
 function useInvoice(id) {
   const { data, isLoading } = useQuery(
     ['invoices', { id }],
-    InvoiceService.getOne
+    getInvoice
   )
 
   const invoice = data

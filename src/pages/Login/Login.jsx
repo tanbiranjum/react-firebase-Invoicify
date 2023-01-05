@@ -26,6 +26,7 @@ function Login() {
 
     login(email, password)
       .then((res) => {
+        console.log(res)
         handleRedirect()
       })
       .catch((err) => {

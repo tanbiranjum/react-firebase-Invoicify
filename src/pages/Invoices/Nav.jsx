@@ -9,14 +9,14 @@ function Nav({ count }) {
     <NavContainer>
       <ColumnOne>
         <NavHeader>
-          <NavHeaderPrimary>Invoices</NavHeaderPrimary>
+          <NavHeaderPrimary>Order</NavHeaderPrimary>
           <NavHeaderSubtitle>
-            There are total {count} {count > 1 ? 'invoices' : 'invoice'}.
+            There are total {count} {count > 1 ? 'orders' : 'order'}.
           </NavHeaderSubtitle>
         </NavHeader>
       </ColumnOne>
       <ColumnTwo>
-        <FilterContainer>
+        {/* <FilterContainer>
           <FilterSelect>
             <option value="" hidden>
               Type
@@ -25,13 +25,13 @@ function Nav({ count }) {
             <option value="pending">Pending</option>
             <option value="draft">Draft</option>
           </FilterSelect>
-        </FilterContainer>
+        </FilterContainer> */}
         <CreateButton
           onClick={() => {
             navigate('/invoice')
           }}
         >
-          <FaRegPaperPlane /> New Invoice
+          <FaRegPaperPlane /> New Order
         </CreateButton>
       </ColumnTwo>
     </NavContainer>

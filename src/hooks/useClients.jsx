@@ -1,9 +1,11 @@
 import React from 'react'
-import { ClientService } from '../services/DatabaseService'
+import { ClientService } from '../services/APIService'
 import { useQuery } from 'react-query'
 
 async function getAllClients() {
-  return await ClientService.getAll()
+  const { data } = await ClientService.getAll()
+  // console.log('hello')
+  return data
 }
 
 function useClients() {
